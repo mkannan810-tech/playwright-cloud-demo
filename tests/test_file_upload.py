@@ -1,25 +1,20 @@
+from playwright.sync_api import Page
 import os
-from playwright.sync_api import sync_playwright
 
-TEST_FILE = os.path.abspath("sample_upload.txt")
+def test_file_upload(page: Page):
+    page.goto("https://the-internet.herokuapp.com/upload")
+    
+    # Create a dummy file for upload
+    file_path = os.path.abspath("dummy.txt")
+    with open(file_path, "w") as f:
+        f.write("This is a test file.")
 
-def test_file_upload():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        context = browser.new_context(record_video_dir="videos/")
-        page = context.new_page()
-        context.tracing.start(screenshots=True, snapshots=True, sources=True)
+    # Upload the file
+    page.set_input_files("#file-upload", file_path)
+    page.click("#file-submit")
 
-        page.goto("https://the-internet.herokuapp.com/upload")
-        page.set_input_files("input#file-upload", TEST_FILE)
-        page.click("input#file-submit")
+    # Verify upload message
+    assert "File Uploaded!" in page.text_content("h3")
 
-        uploaded_file_name = page.text_content("#uploaded-files")
-
-        context.tracing.stop(path="trace_upload.zip")
-        browser.close()
-
-        assert "sample_upload.txt" in uploaded_file_name
-
-   # Wait 3 seconds so video shows the result
+    # Wait 3 seconds so video shows the result
     page.wait_for_timeout(3000)
