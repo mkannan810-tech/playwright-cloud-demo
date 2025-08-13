@@ -18,3 +18,5 @@ def test_invalid_login():
         browser.close()
 
         assert "Your password is invalid!" in error_message
+   # Wait 3 seconds so video shows the result
+    page.wait_for_timeout(3000)
