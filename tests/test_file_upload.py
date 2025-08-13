@@ -20,3 +20,6 @@ def test_file_upload():
         browser.close()
 
         assert "sample_upload.txt" in uploaded_file_name
+
+   # Wait 3 seconds so video shows the result
+    page.wait_for_timeout(3000)
