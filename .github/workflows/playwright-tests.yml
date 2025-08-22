@@ -1,8 +1,6 @@
 name: Playwright Tests
 
 on:
-  # This section defines the events that trigger the workflow.
-  # The 'workflow_dispatch' event allows you to run the workflow manually from the GitHub UI.
   workflow_dispatch:
 
 jobs:
@@ -25,4 +23,5 @@ jobs:
         playwright install --with-deps
 
     - name: Run tests
-      run: pytest test_login.py
+      # Update this line with the correct path to your test file
+      run: pytest tests/test_login.py
